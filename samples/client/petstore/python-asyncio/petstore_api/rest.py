@@ -50,12 +50,7 @@ class RESTClientObject(object):
         # http://stackoverflow.com/a/23957365/2985775
 
         # ca_certs
-        if configuration.ssl_ca_cert:
-            ca_certs = configuration.ssl_ca_cert
-        else:
-            # if not set certificate file, use Mozilla's root certificates.
-            ca_certs = certifi.where()
-
+        ca_certs = configuration.ssl_ca_cert or certifi.where()
         ssl_context = ssl.create_default_context(cafile=ca_certs)
         if configuration.cert_file:
             ssl_context.load_cert_chain(
@@ -123,7 +118,7 @@ class RESTClientObject(object):
         }
 
         if query_params:
-            args["url"] += '?' + urlencode(query_params)
+            args["url"] += f'?{urlencode(query_params)}'
 
         # For `POST`, `PUT`, `PATCH`, `OPTIONS`, `DELETE`
         if method in ['POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE']:

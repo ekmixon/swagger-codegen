@@ -105,10 +105,11 @@ class ModelReturn(object):
 
     def __eq__(self, other):
         """Returns true if both objects are equal"""
-        if not isinstance(other, ModelReturn):
-            return False
-
-        return self.__dict__ == other.__dict__
+        return (
+            self.__dict__ == other.__dict__
+            if isinstance(other, ModelReturn)
+            else False
+        )
 
     def __ne__(self, other):
         """Returns true if both objects are not equal"""
